@@ -1,1 +1,90 @@
-<html contenteditable>
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<style>
+.colorcoded {
+  width: 4em;
+  height: 4em;
+  background: black;
+  float: left;
+  display
+}
+.container-fluid {
+padding-left: 400px;
+padding-right: 400px;
+padding-top: 100px;
+}
+</style>
+
+</head>
+<body> <div class="container-fluid">
+<h1>Concentratietest</h1>
+<p>Welkom! Dit is de concentratietest. Wij gaan proberen je concentratie te meten.</p>
+<h3>Hoe werkt het?</h3>
+<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">15</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
+<div id="addhere"></div>
+</div>
+<script>
+
+colors = ["red","yellow","blue","pink","green","orange","purple", "gray", "brown", "cyan"]
+
+level = 0
+clickedsofar = 0
+
+starttime = 0
+
+map = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+kchosen = 0
+
+$(document).ready(function(){
+	starttime = $.now()
+
+	for(i = 0; i < 18; i++){
+		$("#addhere").append("<div class=\"colorcoded\" id=\"q"+i+"\"></div>")
+	}
+	restart()
+})
+
+function restart(){
+	$("#leveltogo").html(""+(15-level));
+	clickedsofar = 0
+	map = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	
+	kchosen = 0
+	for(i = 0; i < 18; i++){
+		$("#q"+i).off()
+		if(Math.random()<((3-kchosen)/(18-i))) {
+			kchosen++;
+			$("#q"+i).on("click", function(evt){
+				clickedsofar++
+				$("#"+evt.target.id).off().css("background-color", "white")
+				if (clickedsofar>2){
+					level++
+					console.log("click")
+					if(level>=15){
+						$("#leveltogo").html($.now()-starttime)
+					}
+					else{
+						restart()
+					}
+				}
+			})
+		} else {
+			map[i] = Math.floor(Math.random()*9) + 1
+			$("#q"+i).on("click", function(evt){
+				level = 0
+				restart()
+			})
+		}
+		$("#q"+i).css("background-color", colors[map[i]])
+	}
+}
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
