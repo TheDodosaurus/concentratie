@@ -23,15 +23,18 @@ padding-top: 5%;
 <h1>Concentratietest</h1>
 <p>Welkom! Dit is de concentratietest. Wij gaan proberen je concentratie te meten.</p>
 <h3>Hoe werkt het?</h3>
-<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">15</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
+<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">een aantal</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
 <div id="addhere"></div>
 </div>
 <script>
+
+maxlevel = 2
 
 colors = ["red","yellow","blue","pink","green","orange","purple", "gray", "brown", "cyan"]
 
 level = 0
 clickedsofar = 0
+tries = 0
 
 starttime = 0
 
@@ -48,7 +51,7 @@ $(document).ready(function(){
 })
 
 function restart(){
-	$("#leveltogo").html(""+(15-level));
+	$("#leveltogo").html(""+(maxlevel-level));
 	clickedsofar = 0
 	map = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	
@@ -63,8 +66,9 @@ function restart(){
 				if (clickedsofar>2){
 					level++
 					console.log("click")
-					if(level>=15){
-						$("#leveltogo").html($.now()-starttime)
+					if(level>=maxlevel){
+						time = $.now()-starttime
+						$("body").html("" + time + " ms played, "+maxlevel+" levels, "+tries+"+1 tries, lln is 110638, time is DI6E, name is Duncan Whyte. <b>Haal nu een van ons erbij.</b> Code:<br/>"+btoa(""+time+"."+tries)+" DI6E Duncan Whyte 110638 " + maxlevel + "<br />" + navigator.userAgent)
 					}
 					else{
 						restart()
@@ -75,6 +79,7 @@ function restart(){
 			map[i] = Math.floor(Math.random()*9) + 1
 			$("#q"+i).on("click", function(evt){
 				level = 0
+				tries++
 				restart()
 			})
 		}
