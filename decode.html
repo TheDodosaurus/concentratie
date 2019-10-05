@@ -1,0 +1,55 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<style>
+.container-fluid {
+padding-left: 5%;
+padding-right: 5%;
+padding-top: 2%;
+}
+</style>
+
+</head>
+<body> <div class="container-fluid">
+<h1>Decode</h1>
+<p>Tool om scores te decoderen.</p>
+<div class="container">
+<form onsubmit="onformsubmit();return false;" action="#">
+
+<div class="form-group row">
+	<label for="fcode" class="col-sm-2 col-form-label">Code</label>
+	<div class="col-sm-4"> 
+		<input type="text" class="form-control" id="fcode" value="" placeholder="MGI0" />
+	</div>
+</div>
+
+<button type="submit" class="btn btn-primary">Decoderen</button>
+
+
+</form>
+</div>
+
+<p><span id="time">0</span> ms, <span id="tries">0</span>+1 pogingen</p>
+</div>
+
+<script>
+
+function onformsubmit(){
+	rawcode = $("#fcode").val()
+	b64code = atob(rawcode)
+	rawtries = b64code.charAt(0)
+	tries = parseInt(rawtries, 36)
+	rawtime = b64code.substr(1)
+	time = parseInt(rawtime, 36)*10
+	$("#time").html(""+time.toString());
+	$("#tries").html(""+tries);
+}
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

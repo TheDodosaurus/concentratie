@@ -13,11 +13,13 @@ padding-top: 2%;
 
 </head>
 <body> <div class="container-fluid">
+<div id="intro">
 <h1>Goed gedaan!</h1>
 <p>Je hebt een tijd van <b><span id="time">#?</span> ms</b>. Je hebt <span id="tries">#?</span> keer opnieuw moeten beginnen.</p>
 <p>Om verder te gaan hebben we wat informatie van je nodig.<p>
+</div>
 <div class="container">
-<form onsubmit="onformsubmit();return false;" action="#">
+<form onsubmit="onformsubmit();return false;" action="#" id="resultform">
 
 <div class="form-group row">
 	<label for="fname" class="col-sm-2 col-form-label">Naam</label>
@@ -87,6 +89,11 @@ var rawdata
 var data
 
 //$(document).ready(function(){
+$("#resultform").hide()
+$("#intro").hide()
+$("#intro").show(500)
+$("#resultform").delay(5000).show(4000)
+//})
 urlparams = new URLSearchParams(window.location.search)
 rawdata = (urlparams.get('d'))
 data = atob(rawdata).split(".")
@@ -101,7 +108,9 @@ $("#fdevicebrowser").html(navigator.userAgent)
 function onformsubmit(){
 	shorttime = Math.round(data[0]/10).toString(36)
 	shorttries = Math.min(parseInt(data[1]),35).toString(36)
-	console.log(""+btoa(shorttries+shorttime)+" "+$("#fname").val()+" "+$("#flln").val()+" "+$("#fuur").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" "+data[2])
+	enddata = (""+btoa(shorttries+shorttime)+" "+$("#fname").val()+" "+$("#flln").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" ("+$("#fuur").val()+", "+data[2]+")")
+	console.log(enddata)
+	window.location.replace("display.html?d="+btoa(enddata))
 }
 
 </script>
