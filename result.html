@@ -4,28 +4,108 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
-.colorcoded {
-  width: 4em;
-  height: 4em;
-  background: black;
-  float: left;
-  display
-}
 .container-fluid {
-padding-left: 10%;
-padding-right: 10%;
-padding-top: 5%;
+padding-left: 5%;
+padding-right: 5%;
+padding-top: 2%;
 }
 </style>
 
 </head>
 <body> <div class="container-fluid">
-<h1>Concentratietest</h1>
-<p>Welkom! Dit is de concentratietest. Wij gaan proberen je concentratie te meten.</p>
-<h3>Hoe werkt het?</h3>
-<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">een aantal</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
-<div id="addhere"></div>
+<h1>Goed gedaan!</h1>
+<p>Je hebt een tijd van <b><span id="time">#?</span> ms</b>. Je hebt <span id="tries">#?</span> keer opnieuw moeten beginnen.</p>
+<p>Om verder te gaan hebben we wat informatie van je nodig.<p>
+<div class="container">
+<form onsubmit="onformsubmit();return false;" action="#">
+
+<div class="form-group row">
+	<label for="fname" class="col-sm-2 col-form-label">Naam</label>
+	<div class="col-sm-4"> 
+		<input type="text" class="form-control" id="fname" value="" placeholder="Daan de Jong" />
+	</div>
 </div>
+<div class="form-group row">
+	<label for="flln" class="col-sm-2 col-form-label">Leerlingnummer</label>
+	<div class="col-sm-4"> 
+		<input type="text" class="form-control" id="flln" value="" placeholder="111234" />
+	</div>
+</div>
+
+<div class="form-group row">
+    <label for="fuur" class="col-sm-2 col-form-label">Uur</label>
+	<div class="col-sm-4">
+    <select class="form-control" id="fuur">
+      <option value="DI7E">Dinsdag 7e uur</option>
+      <option value="ADMN">Anders</option>
+    </select>
+	</div>
+  </div>
+
+<div class="form-group row">
+	<div class="form-group col-sm-3"> 
+		<label for="fdevice" class="col-form-label">Besturingssysteem</label>
+		<input type="text" class="form-control" id="fdevice" value="" placeholder="Windows/Android/iOS" />
+	</div>
+	<div class="form-group col-sm-3"> 
+		<label for="fbrowser" class="col-form-label">Browser</label>
+		<input type="text" class="form-control" id="fbrowser" value="" placeholder="Chrome/Safari" />
+	</div>
+</div>
+<div class="form-group row">
+	<div class="form-group col-sm-6">
+	<small id="fdevicebrowser" class="form-text text-muted">&nbsp;</small>
+	</div>
+</div>
+
+<div class="form-group row">
+	<label for="ftime" class="col-sm-2 col-form-label">Tijd</label>
+	<div class="col-sm-4"> 
+		<input type="text" readonly class="form-control" id="ftime" value="#?" />
+	</div>
+</div>
+<div class="form-group row">
+	<div class="col-sm-3"> 
+	<label for="ftries" class="col-form-label">Pogingen</label>
+		<input type="text" readonly class="form-control" id="ftries" value="-1" />
+	</div>
+	<div class="col-sm-3"> 
+	<label for="flevel" class="col-form-label">Doeldiepte</label>
+		<input type="text" readonly class="form-control" id="flevel" value="-1" />
+	</div>
+</div>
+
+<button type="submit" class="btn btn-primary">Voltooien</button>
+
+
+</form>
+</div>
+</div>
+
+<script>
+var rawdata
+var data
+
+//$(document).ready(function(){
+urlparams = new URLSearchParams(window.location.search)
+rawdata = (urlparams.get('d'))
+data = atob(rawdata).split(".")
+$("#time").html(data[0])
+$("#ftime").val(data[0]+" ms")
+$("#tries").html(data[1])
+$("#ftries").val(""+(parseInt(data[1])+1))
+$("#flevel").val(data[2])
+$("#fdevicebrowser").html(navigator.userAgent)
+//})
+
+function onformsubmit(){
+	shorttime = Math.round(data[0]/10).toString(36)
+	shorttries = Math.min(parseInt(data[1]),35).toString(36)
+	console.log(""+btoa(shorttries+shorttime)+" "+$("#fname").val()+" "+$("#flln").val()+" "+$("#fuur").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" "+data[2])
+}
+
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

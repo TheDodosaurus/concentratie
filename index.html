@@ -6,14 +6,18 @@
 
 <style>
 .colorcoded {
-  width: 11%;
-  padding-top: 11%;
+  width: 5%;
+  min-width: 2.3em;
+  height: 2.3em;
+  padding-top: 5%;
   background: black;
   float: left;
+  border-radius: 40%;
+  margin: 0.2em;
 }
 .container-fluid {
-padding-left: 10%;
-padding-right: 10%;
+padding-left: 5%;
+padding-right: 5%;
 padding-top: 2%;
 }
 </style>
@@ -22,10 +26,10 @@ padding-top: 2%;
 <body> <div class="container-fluid">
 <h1>Concentratietest</h1>
 <p>Welkom! Dit is de concentratietest. Wij gaan proberen je concentratie te meten.</p>
-<h3>Hoe werkt het?</h3>
+<!--<h6>Hoe werkt het?</h6>-->
 <p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">een aantal</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
 <button type="button" class="btn btn-primary btn-block" id="startbutton" onclick="start()">Klik om te beginnen.</button>
-<div id="addhere"></div>
+<div id="addhere" class="row"></div>
 </div>
 <script>
 
@@ -42,16 +46,16 @@ starttime = 0
 map = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 kchosen = 0
 
-$(document).ready(function(){
-	$("#leveltogo").html(""+(maxlevel-level));
-})
+//$(document).ready(function(){
+$("#leveltogo").html(""+(maxlevel-level));
+//})
 
 function start(){
-	starttime = $.now()-200
-	$("#startbutton").hide(200)
+	starttime = $.now()-400
+	$("#startbutton").hide(400)
 
 	for(i = 0; i < 18; i++){
-		$("#addhere").append("<div class=\"colorcoded\" id=\"q"+i+"\"></div>").hide().show(200)
+		$("#addhere").append("<div class=\"colorcoded\" id=\"q"+i+"\"></div>").hide().show(400)
 	}
 	restart()
 }
