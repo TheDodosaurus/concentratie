@@ -43,7 +43,7 @@ function onformsubmit(){
 	rawtries = b64code.charAt(0)
 	tries = parseInt(rawtries, 36)
 	rawtime = b64code.substr(1)
-	time = parseInt(rawtime, 36)*10
+	time = parseInt(rawtime, 36)
 	$("#time").html(""+time.toString());
 	$("#tries").html(""+tries);
 }

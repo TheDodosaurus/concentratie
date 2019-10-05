@@ -123,7 +123,7 @@ $("#intro").show(500)
 //})
 
 function onformsubmit(){
-	shorttime = Math.round(data[0]/10).toString(36)
+	shorttime = parseInt(data[0]).toString(36)
 	shorttries = Math.min(parseInt(data[1]),35).toString(36)
 	enddata = (""+btoa(shorttries+shorttime)+" \""+$("#fname").val()+"\" "+$("#flln").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" ("+$("#fuur").val()+", "+data[2]+")")
 	console.log(enddata)
