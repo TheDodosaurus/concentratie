@@ -1,5 +1,6 @@
 <html>
 <head>
+<link rel="shortcut icon" type="image/png" href="favicon.png"/>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -14,7 +15,7 @@ padding-top: 2%;
 </head>
 <body> <div class="container-fluid">
 <div id="intro">
-<h1>Goed gedaan!</h1>
+<span id="title"><h1>Goed gedaan!</h1></span>
 <p>Je hebt een tijd van <b><span id="time">#?</span> ms</b>. Je hebt <span id="tries">#?</span> keer opnieuw moeten beginnen.</p>
 <p>Om verder te gaan hebben we wat informatie van je nodig.<p>
 </div>
@@ -39,7 +40,8 @@ padding-top: 2%;
 	<div class="col-sm-4">
     <select class="form-control" id="fuur">
       <option value="DI7E">Dinsdag 7e uur</option>
-      <option value="ADMN">Anders</option>
+      <option value="ADMN">Woensdag 6e uur</option>
+      <option id="adminoption" disabled value="ADMN">Admin</option>
     </select>
 	</div>
   </div>
@@ -91,8 +93,6 @@ var data
 //$(document).ready(function(){
 $("#resultform").hide()
 $("#intro").hide()
-$("#intro").show(500)
-$("#resultform").delay(5000).show(4000)
 //})
 urlparams = new URLSearchParams(window.location.search)
 rawdata = (urlparams.get('d'))
@@ -103,12 +103,29 @@ $("#tries").html(data[1])
 $("#ftries").val(""+(parseInt(data[1])+1))
 $("#flevel").val(data[2])
 $("#fdevicebrowser").html(navigator.userAgent)
+isadmin = data[3]
+if(isadmin=="1"){
+	$("#resultform").show()
+	$("#intro").show()
+	console.log("ADMIN MODE")
+	$("#adminoption").removeAttr('disabled').attr('selected','selected')
+	$("#flln").val("adminmode").attr('readonly','readonly')
+	$("#fname").val("adminmode").attr('readonly','readonly')
+	$("#fuur").attr('disabled','disabled')
+	$("#fdevice").val("adminmode").attr('readonly','readonly')
+	$("#fbrowser").val("adminmode").attr('readonly','readonly')
+	$("#title").html("<h1>Goed gedaan!</h1>&nbsp;&nbsp<h3 class=\"text-muted\">Note: administrator mode enabled.</h3>")
+} else {
+$("#resultform").delay(5000).show(4000)
+$("#intro").show(500)
+
+}
 //})
 
 function onformsubmit(){
 	shorttime = Math.round(data[0]/10).toString(36)
 	shorttries = Math.min(parseInt(data[1]),35).toString(36)
-	enddata = (""+btoa(shorttries+shorttime)+" "+$("#fname").val()+" "+$("#flln").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" ("+$("#fuur").val()+", "+data[2]+")")
+	enddata = (""+btoa(shorttries+shorttime)+" \""+$("#fname").val()+"\" "+$("#flln").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" ("+$("#fuur").val()+", "+data[2]+")")
 	console.log(enddata)
 	window.location.replace("display.html?d="+btoa(enddata))
 }

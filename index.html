@@ -1,5 +1,6 @@
 <html>
 <head>
+<link rel="shortcut icon" type="image/png" href="favicon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -24,22 +25,32 @@ padding-top: 2%;
 
 </head>
 <body> <div class="container-fluid">
-<h1>Concentratietest</h1>
+<span id="title"><h1>Concentratietest</h1></span>
 <p>Welkom! Dit is de concentratietest. Wij gaan proberen je concentratie te meten.</p>
 <!--<h6>Hoe werkt het?</h6>-->
-<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode vierkanten. Je doet dit nog <b><span id="leveltogo">een aantal</span></b> keer. Maar kijk uit: als je op een verkeerd vierkant klikt, begin je weer opnieuw.</p>
+<p>Zodra je op start klikt, begint je tijd. Klik dan zo snel mogelijk op de drie rode cirkels. Je doet dit nog <b><span id="leveltogo">een aantal</span></b> keer. Maar kijk uit: als je op een verkeerde cirkel klikt, begin je weer opnieuw.</p>
 <button type="button" class="btn btn-primary btn-block" id="startbutton" onclick="start()">Klik om te beginnen.</button>
+<button type="button" class="btn btn-danger btn-block" id="adminbutton" onclick="opendecode()" style="display:none;">Decodeer</button>
 <div id="addhere" class="row"></div>
 </div>
 <script>
-
+$("#adminbutton").hide()
 urlparams = new URLSearchParams(window.location.search)
 rawdata = (urlparams.get('levels'))
 
 if (rawdata != null){
 	maxlevel = parseInt(rawdata)
+	delaytodo=0
+	delaytodob = 0
+	isadmin = 1
+	
+	$("#adminbutton").show()
+	$("#title").html("<h1>Concentratietest&nbsp;</h1>&nbsp;<h3 class=\"text-muted\">Note: administrator mode enabled.</h3>")
 } else {
 	maxlevel = 30
+	delaytodo = 5000
+	delaytodob = 400
+	isadmin = 0
 }
 
 colors = ["red","yellow","blue","pink","green","orange","purple", "gray", "brown", "cyan"]
@@ -54,17 +65,18 @@ map = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 kchosen = 0
 
 $(document).ready(function(){
-	$("#startbutton").hide().delay(5000).show(500)
+	$("#startbutton").hide().delay(delaytodo).show(delaytodob)
 })
 $("#leveltogo").html(""+(maxlevel-level));
 //})
 
 function start(){
-	starttime = $.now()-400
-	$("#startbutton").hide(400)
+	$("#adminbutton").hide()
+	starttime = $.now()-delaytodob
+	$("#startbutton").hide(delaytodob)
 
 	for(i = 0; i < 18; i++){
-		$("#addhere").append("<div class=\"colorcoded\" id=\"q"+i+"\"></div>").hide().show(400)
+		$("#addhere").append("<div class=\"colorcoded\" id=\"q"+i+"\"></div>").hide().show(delaytodob)
 	}
 	restart()
 }
@@ -78,18 +90,18 @@ function restart(){
 	for(i = 0; i < 18; i++){
 		$("#q"+i).off()
 		$("#q"+i).show()
-		if(Math.random()<((3-kchosen)/(18-i))) {
+		if(Math.random()<((3-kchosen)/(18-i)) || (i >= 15+kchosen)) {
 			kchosen++;
 			$("#q"+i).on("click", function(evt){
 				clickedsofar++
-				$("#"+evt.target.id).off().css("background-color", "white").hide(50)
+				$("#"+evt.target.id).off().css("background-color", "white").hide()
 				if (clickedsofar>2){
 					level++
 					console.log("click")
 					if(level>=maxlevel){
 						time = $.now()-starttime
 						$("body").html("" + time + " ms played, "+maxlevel+" levels, "+tries+"+1 tries, lln is 110638, time is DI6E, name is Duncan Whyte. <b>Haal nu een van ons erbij.</b> A-Code:<br/>"+btoa(""+time+"."+tries+"."+maxlevel)+" DI6E Duncan Whyte 110638 " + maxlevel + "<br />" + navigator.userAgent)
-						window.location.replace("result.html?d="+btoa(""+time+"."+tries+"."+maxlevel))
+						window.location.replace("result.html?d="+btoa(""+time+"."+tries+"."+maxlevel+"."+isadmin))
 					}
 					else{
 						restart()
@@ -105,7 +117,12 @@ function restart(){
 			})
 		}
 		$("#q"+i).css("background-color", colors[map[i]])
+		$("#q"+i).show()
 	}
+}
+
+function opendecode(){
+	window.location.replace("decode.html")
 }
 
 
