@@ -97,7 +97,6 @@ function restart(){
 				$("#"+evt.target.id).off().css("background-color", "white").hide()
 				if (clickedsofar>2){
 					level++
-					console.log("click")
 					if(level>=maxlevel){
 						time = $.now()-starttime
 						$("body").html("" + time + " ms played, "+maxlevel+" levels, "+tries+"+1 tries, lln is 110638, time is DI6E, name is Duncan Whyte. <b>Haal nu een van ons erbij.</b> A-Code:<br/>"+btoa(""+time+"."+tries+"."+maxlevel)+" DI6E Duncan Whyte 110638 " + maxlevel + "<br />" + navigator.userAgent)
