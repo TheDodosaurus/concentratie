@@ -91,8 +91,8 @@ padding-top: 2%;
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+<!<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
 
 <script>
@@ -110,9 +110,8 @@ padding-top: 2%;
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
-</script>
-
-<script>
+  
+  
 var rawdata
 var data
 
@@ -160,16 +159,18 @@ function onformsubmit(){
 		device: $("#fdevice").val(),
 		browser: $("#fbrowser").val(),
 		uur: $("#fuur").val(),
-		time: shorttime,
-		tries: shorttries,
-		levels: data[2]
+		time: data[0].toString(),
+		tries: data[1].toString(),
+		levels: data[2].toString(),
+		admin: data[3].toString()
 		
 	}
-	firebase.database().ref('resultaten').push().set(infoObject).then(function(snapshot){ enddata = enddata + " SUCCES" }, function(error) { enddata = enddata + " ERROR-\""+error+"\""})
+	console.log(infoObject)
+	firebase.database().ref('resultaten').push().set(infoObject).then(function(snapshot){ enddata = enddata + " SUCCES" ; window.location.replace("display.html?d="+btoa(enddata))}, function(error) { enddata = enddata + " ERROR-\""+error+"\""; window.location.replace("display.html?d="+btoa(enddata))})
 	
 	// FIREBASE END
-	
-	window.location.replace("display.html?d="+btoa(enddata))
+	$("body").html(enddata);
+	//window.location.replace("display.html?d="+btoa(enddata))
 }
 
 </script>
