@@ -161,7 +161,8 @@ function onformsubmit(){
 		browser: $("#fbrowser").val(),
 		uur: $("#fuur").val(),
 		time: shorttime,
-		tries: shorttries
+		tries: shorttries,
+		levels: data[2]
 		
 	}
 	firebase.database().ref('resultaten').push().set(infoObject).then(function(snapshot){ enddata = enddata + " SUCCES" }, function(error) { enddata = enddata + " ERROR-\""+error+"\""})
