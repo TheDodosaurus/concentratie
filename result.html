@@ -11,6 +11,10 @@ padding-left: 5%;
 padding-right: 5%;
 padding-top: 2%;
 }
+
+body {
+	display: none;
+}
 </style>
 
 </head>
@@ -59,14 +63,13 @@ padding-top: 2%;
 </div>
 <div class="form-group row">
 	<div class="form-group col-sm-6">
-	<small id="fdevicebrowser" class="form-text text-muted">&nbsp;</small>
+	<small class="form-text text-muted"> Je browser geeft de volgende informatie over je besturingssysteem en browser: </small><small id="fdevicebrowser" class="form-text text-muted">&nbsp;</small>
 	</div>
 </div>
-
 <div class="form-group row">
 	<label for="ftime" class="col-sm-2 col-form-label">Tijd</label>
 	<div class="col-sm-4"> 
-		<input type="text" readonly class="form-control" id="ftime" value="#?" />
+		<input type="text" class="form-control" readonly id="ftime" value="#? ms" />
 	</div>
 </div>
 <div class="form-group row">
@@ -77,6 +80,13 @@ padding-top: 2%;
 	<div class="col-sm-3"> 
 	<label for="flevel" class="col-form-label">Doeldiepte</label>
 		<input type="text" readonly class="form-control" id="flevel" value="-1" />
+	</div>
+</div>
+
+<div class="form-group row">
+	<label for="fauth" class="col-sm-2 col-form-label">Authenticatie</label>
+	<div class="col-sm-4"> 
+		<input type="text" class="form-control" id="fauth" placeholder="Vraag aan een van ons" />
 	</div>
 </div>
 
@@ -94,24 +104,11 @@ padding-top: 2%;
 <!<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
-
+<script type="text/javascript" src="https://cdn.rawgit.com/ricmoo/aes-js/e27b99df/index.js"></script>
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyA8k2XhYpDehufkitOaKrVlQBUJgD_"+prompt("Authenticatiecode"),
-    authDomain: "concentratie-act-sgl.firebaseapp.com",
-    databaseURL: "https://concentratie-act-sgl.firebaseio.com",
-    projectId: "concentratie-act-sgl",
-    storageBucket: "",
-    messagingSenderId: "707543485460",
-    appId: "1:707543485460:web:3c0bef1deceeae2e29eb01",
-    measurementId: "G-7LD321DLYH"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
   
   
+$('body').show()
 var rawdata
 var data
 
@@ -165,6 +162,20 @@ function onformsubmit(){
 		admin: data[3].toString()
 		
 	}
+  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyA8k2XhYpDehufkitOaKrVlQBUJgD_"+$("fauth").val(),
+		authDomain: "concentratie-act-sgl.firebaseapp.com",
+		databaseURL: "https://concentratie-act-sgl.firebaseio.com",
+		projectId: "concentratie-act-sgl",
+		storageBucket: "",
+		messagingSenderId: "707543485460",
+		appId: "1:707543485460:web:3c0bef1deceeae2e29eb01",
+		measurementId: "G-7LD321DLYH"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  firebase.analytics();
 	console.log(infoObject)
 	firebase.database().ref('resultaten').push().set(infoObject).then(function(snapshot){ enddata = enddata + " SUCCES" ; window.location.replace("display.html?d="+btoa(enddata))}, function(error) { enddata = enddata + " ERROR-\""+error+"\""; window.location.replace("display.html?d="+btoa(enddata))})
 	
