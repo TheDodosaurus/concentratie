@@ -87,6 +87,31 @@ padding-top: 2%;
 </div>
 </div>
 
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyA8k2XhYpDehufkitOaKrVlQBUJgD_9Q6A",
+    authDomain: "concentratie-act-sgl.firebaseapp.com",
+    databaseURL: "https://concentratie-act-sgl.firebaseio.com",
+    projectId: "concentratie-act-sgl",
+    storageBucket: "",
+    messagingSenderId: "707543485460",
+    appId: "1:707543485460:web:3c0bef1deceeae2e29eb01",
+    measurementId: "G-7LD321DLYH"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
 <script>
 var rawdata
 var data
@@ -128,6 +153,21 @@ function onformsubmit(){
 	shorttries = Math.min(parseInt(data[1]),35).toString(36)
 	enddata = (""+btoa(shorttries+shorttime)+" \""+$("#fname").val()+"\" "+$("#flln").val()+" "+$("#fdevice").val()+" "+$("#fbrowser").val()+" ("+$("#fuur").val()+", "+data[2]+")")
 	console.log(enddata)
+	// FIREBASE START
+	var infoObject = {
+		name: $("#fname").val(),
+		lln: $("#flln").val(),
+		device: $("#fdevice").val(),
+		browser: $("#fbrowser").val(),
+		uur: $("#fuur").val(),
+		time: shorttime,
+		tries: shorttries
+		
+	}
+	firebase.database().ref('resultaten').push().set(infoObject).then(function(snapshot){ enddata = enddata + " SUCCES" }, function(error) { enddata = enddata + " ERROR-\""+error+"\""})
+	
+	// FIREBASE END
+	
 	window.location.replace("display.html?d="+btoa(enddata))
 }
 
